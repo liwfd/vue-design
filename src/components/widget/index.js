@@ -1,5 +1,6 @@
 import Vue from 'vue';
 
+import WidgetPage from '../layout/widgetPage';
 import RowWidget from './RowWidget';
 import ColWidget from './ColWidget';
 import CardWidget from './CardWidget';
@@ -21,6 +22,7 @@ import TableColumnWidget from './TableColumnWidget';
 import FormWidget from './FormWidget';
 import FormItemWidget from './FormItemWidget';
 
+Vue.component('widget-page', WidgetPage);
 Vue.component('row-widget', RowWidget);
 Vue.component('col-widget', ColWidget);
 Vue.component('card-widget', CardWidget);

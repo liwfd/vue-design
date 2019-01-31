@@ -7,12 +7,11 @@
 </template>
 
 <script>
-    import WidgetPage from '../../components/layout/widgetPage'
     import TableColumn from './table-column'
 
     export default {
         name: 'testPage',
-        components: { TableColumn, WidgetPage },
+        components: { TableColumn },
         props: ['data'],
         data () {
             return {
