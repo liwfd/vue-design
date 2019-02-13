@@ -4,6 +4,7 @@
                  :props="defaultProps" @node-click="handleNodeClick"
                  @node-contextmenu="openMenu"></el-tree>
         <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
+            <li @click="save">保存为部件</li>
             <li @click="$emit('handle', 'edit')">编辑</li>
             <li @click="$emit('handle', 'clear')">清空</li>
             <li @click="$emit('handle', 'delete')" v-if="selectNode.uiKey !== 'root'">删除</li>
@@ -14,7 +15,7 @@
 <script>
     export default {
         name: 'nodeTree',
-        props: ['data'],
+        props: ['data', 'currentNode'],
         data () {
             return {
                 defaultProps: {
@@ -43,6 +44,27 @@
             },
             nodeDrop () {
                 this.$emit('nodeDrop');
+            },
+            save() {
+                this.$prompt('请输入部件名称', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputValidator: value => {
+                        return !!value;
+                    },
+                    inputErrorMessage: '请输入部件名称'
+                }).then(({ value }) => {
+                    this.$fetch.post('/api/setFile', { data: this.currentNode, pageId: value, type: 'widgets' }).then(jRes => {
+                        jRes.json().then(res => {
+                            if (res.success) {
+                                this.$message.success('保存成功！')
+                                this.$emit('handle', 'updateMyWidgets')
+                            }
+                        })
+                    })
+                }).catch(() => {
+
+                });
             },
             openMenu (e, nodeData) {
                 const menuMinWidth = 105

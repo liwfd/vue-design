@@ -38,7 +38,7 @@
                 }, {
                     label: '表格列',
                     type: 'table-column-widget',
-                    parent: ['table-widget']
+                    parent: ['table-widget', 'table-column-widget']
                 }, {
                     label: '表单',
                     type: 'form-widget',

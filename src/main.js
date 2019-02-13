@@ -6,6 +6,8 @@ import fullscreen from 'vue-fullscreen'
 import vueFetch from './plugin/vueFetch'
 import "./directive"
 import VueHighlightJS from 'vue-highlightjs'
+import VeCharts from 've-charts'
+import 've-charts/lib/ve-charts.min.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'highlightjs/styles/atom-one-dark.css'
 import VueClipboard from "vue-clipboard2"
@@ -22,6 +24,7 @@ Vue.use(VueHighlightJS);
 Vue.use(VueClipboard);
 Vue.use(fullscreen)
 Vue.use(vueFetch)
+Vue.use(VeCharts)
 Vue.use(Api)
 Vue.use(Constant)
 Vue.prototype._ = _;

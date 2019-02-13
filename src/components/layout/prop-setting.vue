@@ -1,9 +1,12 @@
 <template>
     <div>
+        <table-edit v-if="propData.type === 'table-widget'" :settingData="propData.options"></table-edit>
         <table-column-edit v-if="propData.type === 'table-column-widget'" :settingData="propData.options"></table-column-edit>
         <form-edit v-if="propData.type === 'form-widget'" :settingData="propData.options"></form-edit>
         <form-item-edit v-if="propData.type === 'form-item-widget'" :settingData="propData.options"></form-item-edit>
         <col-edit v-if="propData.type === 'col-widget'" :settingData="propData.options"></col-edit>
+        <tab-pane-edit v-if="propData.type === 'el-tab-pane'" :settingData="propData.options"></tab-pane-edit>
+        <steps-edit :children="propData.children" v-if="propData.type === 'steps-widget'" :settingData="propData.options"></steps-edit>
         <button-edit v-if="propData.type === 'button-widget'" :settingData="propData.options"></button-edit>
         <icon-edit v-if="propData.type === 'svg-icon'" :settingData="propData.options"></icon-edit>
         <input-edit v-if="['input-widget', 'select-widget', 'radio-group-widget', 'checkbox-group-widget'].includes(propData.type)" :settingData="propData.options" :type="propData.type"></input-edit>
@@ -36,9 +39,12 @@
     import IconEdit from '../setting-form/icon-edit'
     import DatePickerEdit from '../setting-form/date-picker-edit'
     import TimePickerEdit from '../setting-form/time-picker-edit'
+    import TableEdit from '../setting-form/table-edit'
+    import TabPaneEdit from '../setting-form/tab-pane-edit'
+    import StepsEdit from '../setting-form/steps-edit'
     export default {
         name: 'prop-setting',
-        components: { TimePickerEdit, DatePickerEdit, IconEdit, DialogEdit, SpanEdit, TemplateEdit, SlotEdit, RadioEdit, ButtonEdit, OptionEdit, SwitchEdit, InputEdit, FormItemEdit, FormEdit, ColEdit, TableColumnEdit },
+        components: { StepsEdit, TabPaneEdit, TableEdit, TimePickerEdit, DatePickerEdit, IconEdit, DialogEdit, SpanEdit, TemplateEdit, SlotEdit, RadioEdit, ButtonEdit, OptionEdit, SwitchEdit, InputEdit, FormItemEdit, FormEdit, ColEdit, TableColumnEdit },
         props: ['propData']
     }
 </script>

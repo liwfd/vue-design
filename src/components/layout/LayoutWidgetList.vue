@@ -42,6 +42,31 @@
                     parent: [],
                     all: true
                 }, {
+                    label: '外层容器',
+                    type: 'container-widget',
+                    parent: [],
+                    all: true
+                }, {
+                    label: '顶栏容器',
+                    type: 'header-widget',
+                    parent: [],
+                    all: true
+                }, {
+                    label: '侧边栏容器',
+                    type: 'aside-widget',
+                    parent: [],
+                    all: true
+                }, {
+                    label: '主要区域容器',
+                    type: 'main-widget',
+                    parent: [],
+                    all: true
+                }, {
+                    label: '底栏容器',
+                    type: 'footer-widget',
+                    parent: [],
+                    all: true
+                }, {
                     label: '栅格布局',
                     type: 'row-widget',
                     parent: [],
@@ -54,11 +79,35 @@
                 }, {
                     label: '弹窗',
                     type: 'dialog-widget',
-                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'card-widget']
+                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'card-widget', 'collapse-item-widget']
                 }, {
                     label: '卡片',
                     type: 'card-widget',
-                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'card-widget']
+                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'card-widget', 'collapse-item-widget', 'tab-pane-widget']
+                }, {
+                    label: '标签页',
+                    type: 'tabs-widget',
+                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'card-widget', 'tab-pane-widget']
+                }, {
+                    label: '页签',
+                    type: 'tab-pane-widget',
+                    parent: ['tabs-widget']
+                }, {
+                    label: '面板',
+                    type: 'collapse-widget',
+                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'card-widget', 'collapse-item-widget', 'tab-pane-widget']
+                }, {
+                    label: '面板项',
+                    type: 'collapse-item-widget',
+                    parent: ['collapse-widget']
+                }, {
+                    label: '步骤条',
+                    type: 'steps-widget',
+                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'card-widget', 'collapse-item-widget', 'tab-pane-widget']
+                }, {
+                    label: '步骤',
+                    type: 'step-widget',
+                    parent: ['steps-widget']
                 }],
             }
         },

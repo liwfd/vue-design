@@ -1,7 +1,7 @@
 <template>
-    <div>
-
-    </div>
+    <el-tabs>
+        <slot></slot>
+    </el-tabs>
 </template>
 <script>
     export default {

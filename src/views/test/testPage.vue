@@ -1,8 +1,16 @@
 <template>
     <div>
-        <widget-page ref="wp" :data="jsonData" :eventHandler="eventHandler" pageId="p000001">
-            <div slot="test" style="border: 1px dashed #eee;margin: 10px;">插槽区域，扩展特殊组件</div>
-        </widget-page>
+        <!--<widget-page ref="wp" :data="jsonData" :eventHandler="eventHandler" pageId="p000001">-->
+            <!--<div slot="test" style="border: 1px dashed #eee;margin: 10px;">插槽区域，扩展特殊组件</div>-->
+        <!--</widget-page>-->
+        <table-column>
+            <el-tab-pane label="test">
+                666
+            </el-tab-pane>
+            <el-tab-pane label="test">
+                999
+            </el-tab-pane>
+        </table-column>
     </div>
 </template>
 

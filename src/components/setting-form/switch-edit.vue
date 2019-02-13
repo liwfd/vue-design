@@ -19,7 +19,7 @@
         data () {
             return {
                 rules: {
-                    label: [
+                    value: [
                         { required: false, message: '请输入默认值', trigger: 'blur' },
                     ],
                     prop: [

@@ -42,7 +42,7 @@
                 return UI
             },
             getData() {
-                this.pageId && this.$fetch.post('/api/getFile', {pageId: this.pageId}).then(jRes => {
+                this.pageId && this.$fetch.post('/api/getFile', {pageId: this.pageId, type: 'pages'}).then(jRes => {
                     jRes.json().then(res => {
                         if (res.success) {
                             this.jsonData = JSON.parse(res.data).data || this.jsonData
@@ -75,7 +75,7 @@
                 return data.map((item, index) => {
                     let custom = this.eventHandler[item.nodeKey] || {}
                     let options = Object.assign({}, item.options, custom.options)
-                    if ('form-widget' === item.type) {
+                    if (item.type === 'form-widget') {
                         this.formModels[item.nodeKey] = options.model
                     }
                     if (this.$constants.inWidgets.includes(item.type)) {
@@ -86,7 +86,9 @@
                         }
                     }
                     //解决列排序问题
-                    options.key = index
+                    if (item.type === 'table-column-widget') {
+                        options.key = index + 100
+                    }
 
                     return h(item.type, {
                         props: {
@@ -98,7 +100,7 @@
                         attrs: options,
                         class: custom.class || item.class,
                         style: Object.assign({}, item.style, custom.style),
-                        key: custom.uiKey || item.uiKey,
+                        // key: custom.uiKey || item.uiKey,
                         ref: custom.nodeKey || item.nodeKey,
                         on: {
                             ...custom.event, ...{

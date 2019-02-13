@@ -6,6 +6,13 @@
         <el-form-item label="prop:" prop="prop">
             <el-input class="rule-item" v-model="settingData.prop" placeholder="请输入prop"></el-input>
         </el-form-item>
+        <el-form-item label="类型:" prop="type">
+            <el-select class="rule-item" v-model="settingData.type" placeholder="请选择类型">
+                <el-option label="标准" value="" key="0"></el-option>
+                <el-option label="序列" value="index" key="1"></el-option>
+                <el-option label="展开" value="expand" key="2"></el-option>
+            </el-select>
+        </el-form-item>
         <el-form-item label="列宽:" prop="width">
             <el-input class="rule-item" v-model="settingData.width" placeholder="请输入列宽"></el-input>
         </el-form-item>
@@ -20,10 +27,10 @@
             return {
                 rules: {
                     label: [
-                        { required: true, message: '请输入列名', trigger: 'blur' },
+                        { required: false, message: '请输入列名', trigger: 'blur' },
                     ],
                     prop: [
-                        { required: true, message: '请输入prop', trigger: 'blur' },
+                        { required: false, message: '请输入prop', trigger: 'blur' },
                     ],
                     width: [
                         { required: false, message: '请输入列宽', trigger: 'blur' },

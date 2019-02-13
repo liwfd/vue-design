@@ -9,11 +9,12 @@
                 <span v-html="options.formatter(scope.row, options)"></span>
             </template>
         </template>
+        <slot></slot>
     </el-table-column>
 </template>
-
 <script>
     import RenderColumn from './components/render-column'
+
     export default {
         name: 'table-column-widget',
         components: { RenderColumn },

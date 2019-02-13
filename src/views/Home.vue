@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <navbar @addNode="addNode" :selectNode="selectNode"></navbar>
+        <navbar @addNode="addNode" :selectNode="selectNode" ref="navbar"></navbar>
         <div style="height: 50px;"></div>
         <split-pane split="vertical" @resize="resize" :default-percent='70'>
             <template slot="paneL">
@@ -11,13 +11,13 @@
                                 <span>节点树</span>
                             </div>
                             <node-tree :data.sync="jsonData" @nodeClick="nodeClick" @handle="handleNode"
-                                       @nodeDrop="nodeDrop"></node-tree>
+                                       @nodeDrop="nodeDrop" :currentNode="selectNode"></node-tree>
                         </el-card>
                     </template>
                     <template slot="paneR">
                         <tool-bar @handle="handleTool" :page="page"></tool-bar>
                         <fullscreen ref="fullscreen" style="background: #fff;">
-                            <div style="padding: 5px 0;height: 85vh;overflow: auto;width: 100%;">
+                            <div :style="{padding: '5px 0', height: height, overflow: 'auto', width: '100%'}">
                                 <widget-page ref="page" :data="jsonData" @handle="handlePage"></widget-page>
                             </div>
                         </fullscreen>
@@ -109,13 +109,14 @@
                 page: {
                     pageId: ''
                 },
+                height: window.innerHeight - 100 + "px",
                 jsonData: [{
                     label: '根节点',
                     type: 'div',
                     eleType: 'div',
                     style: {
                         overflow: 'auto',
-                        height: '100vh'
+                        height: '100%'
                     },
                     uiKey: 'root',
                     nodeKey: 'root',
@@ -125,6 +126,11 @@
         },
         created () {
 
+        },
+        mounted() {
+            window.addEventListener("resize", () => {
+                this.height = window.innerHeight - 100 + "px";
+            });
         },
         methods: {
             //树拖拽结束
@@ -145,7 +151,7 @@
                 this.$refs['fullscreen'].toggle()
             },
             view () {
-                this.page.pageId && this.$fetch.post('/api/getFile', { pageId: this.page.pageId }).then(jRes => {
+                this.page.pageId && this.$fetch.post('/api/getFile', { pageId: this.page.pageId, type: 'pages' }).then(jRes => {
                     jRes.json().then(res => {
                         if (res.success) {
                             this.jsonData = JSON.parse(res.data).data || this.jsonData
@@ -163,27 +169,34 @@
                             this.formKey = item.nodeKey
                         }
                         if (item.uiKey === this.selectNode.uiKey) {
+                            if (mode === 'widget') {
+                                this.$fetch.post('/api/getFile', { pageId: type, type: 'widgets' }).then(jRes => {
+                                    jRes.json().then(res => {
+                                        if (res.success) {
+                                            let wid = JSON.parse(res.data).data;
+                                            wid.uiKey = mode + '_' + key;
+                                            item.children.push(wid);
+                                        }
+                                    })
+                                })
+                                return;
+                            }
                             let widget = this._.cloneDeep(this.$constants.widgets[mode][type])
                             let bros = item.children.filter(v => v.type === widget.type)
                             bros.length++
+
+                            //nodeInfo
                             widget.uiKey = type + '_' + key
                             widget.nodeKey += bros.length
                             widget.label += bros.length
-                            if (['form-item-widget', 'table-column-widget'].includes(widget.type)) {
-                                widget.options.label += bros.length
-                                widget.options.prop += bros.length
-                            }
-                            if (['option-widget'].includes(widget.type)) {
-                                widget.options.label += bros.length
-                                widget.options.value += bros.length
-                            }
-                            if (['slot'].includes(widget.type)) {
-                                widget.options.name += bros.length
-                            }
-                            if (['radio-widget', 'checkbox-widget'].includes(widget.type)) {
-                                widget.options.label += bros.length
-                                widget.options.text += bros.length
-                            }
+
+                            //options
+                            widget.options.label && (widget.options.label += bros.length)
+                            widget.options.prop && (widget.options.prop += bros.length)
+                            widget.options.value && (widget.options.value += bros.length)
+                            widget.options.name && (widget.options.name += bros.length)
+                            widget.options.text && (widget.options.text += bros.length)
+                            mode !== 'chart' && widget.options.title && (widget.options.title += bros.length)
                             if (this.$constants.inWidgets.includes(widget.type)) {
                                 widget.options.formKey = this.formKey
                             }
@@ -250,7 +263,7 @@
                     this.$message.error('请先输入pageId');
                     return;
                 }
-                this.$fetch.post('/api/setFile', { data: this.jsonData, pageId: this.page.pageId }).then(jRes => {
+                this.$fetch.post('/api/setFile', { data: this.jsonData, pageId: this.page.pageId, type: 'pages' }).then(jRes => {
                     jRes.json().then(res => {
                         if (res.success) {
                             this.$message.success('保存成功！')
@@ -313,6 +326,8 @@
                         this.editor = editor
                         editor.set(this.selectNode)
                     })
+                } else if (action === 'updateMyWidgets') {
+                    this.$refs['navbar'].updateMyWidgets();
                 }
 
             },

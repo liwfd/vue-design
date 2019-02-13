@@ -1,6 +1,6 @@
 <template>
-    <el-form label-width="100px">
-        <el-form-item label="宽度:" :model="settingData">
+    <el-form label-width="100px" :model="settingData">
+        <el-form-item label="宽度:" prop="span">
             <el-slider
                 v-model="settingData.span"
                 :max="24"
