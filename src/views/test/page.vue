@@ -15,7 +15,6 @@
         },
         created () {
             this.getTable()
-            console.log('this.$route', this.$route);
         },
         methods: {
             getTable () {

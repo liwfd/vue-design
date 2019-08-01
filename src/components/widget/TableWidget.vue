@@ -7,6 +7,7 @@
 
 <script>
     import RenderColumn from './components/render-column'
+    import Table from 'element-ui/lib/table'
 
     export default {
         name: 'table-widget',
@@ -15,7 +16,14 @@
         created () {
             // console.log('this.options', this.options);
         },
-        methods: {}
+        mounted () {
+            this.$nextTick(() => {
+                // proxy
+                Object.keys(Table.methods).forEach((item) => {
+                    this[item] = this.$refs[this.nodeInfo.nodeKey][item]
+                })
+            })
+        },
     }
 </script>
 

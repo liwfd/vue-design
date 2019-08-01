@@ -16,6 +16,15 @@
                 <el-option label="文本域" value="textarea" key="2"></el-option>
             </el-select>
         </el-form-item>
+        <el-form-item v-if="type === 'select-widget'">
+            <el-button type="primary" @click="$emit('addChild', 'basic', 'option-widget')">添加选项</el-button>
+        </el-form-item>
+        <el-form-item v-if="type === 'radio-group-widget'">
+            <el-button type="primary" @click="$emit('addChild', 'basic', 'radio-widget')">添加单选项</el-button>
+        </el-form-item>
+        <el-form-item v-if="type === 'checkbox-group-widget'">
+            <el-button type="primary" @click="$emit('addChild', 'basic', 'checkbox-widget')">添加复选项</el-button>
+        </el-form-item>
     </el-form>
 </template>
 

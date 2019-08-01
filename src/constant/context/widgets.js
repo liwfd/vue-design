@@ -61,6 +61,27 @@ export default {
             },
             children: []
         },
+        'input-number-widget': {
+            label: '计数器',
+            mode: 'basic',
+            style: {},
+            class: '',
+            type: 'input-number-widget',
+            eleType: 'el-input-number',
+            nodeKey: 'basicInputNumber',
+            options: {
+                type: 'text',
+                model: '',
+                formKey: '',
+                show: true,
+                formData: {},
+                step: 1,
+                precision: 2,
+                'controls-position': 'right',
+                value: 0
+            },
+            children: []
+        },
         'switch-widget': {
             label: '开关',
             mode: 'basic',
@@ -326,6 +347,23 @@ export default {
                 label: '表格列',
                 prop: 'prop',
                 show: true
+            },
+            children: []
+        },
+        'pagination-widget': {
+            label: '分页',
+            mode: 'data',
+            style: {},
+            class: '',
+            type: 'pagination-widget',
+            eleType: 'el-pagination',
+            nodeKey: 'dataPagination',
+            options: {
+                total: 0,
+                layout: ['prev', 'pager', 'next'],
+                background: true,
+                show: true,
+                'page-sizes': [10, 20, 30, 40]
             },
             children: []
         },

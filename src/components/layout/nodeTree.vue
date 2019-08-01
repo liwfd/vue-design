@@ -1,6 +1,15 @@
 <template>
     <div class="node-tree">
-        <el-tree @node-drop="nodeDrop" draggable :expand-on-click-node="false" default-expand-all node-key="uiKey" style="background: transparent;" ref="tree" highlight-current :data="data"
+        <div class="op-tree">
+            <el-button type="text" title="全部展开" @click="toggle(true)">
+                <svg-icon icon-class="expand" style="width: 18px;height: 18px;padding-bottom: 1px;"></svg-icon>
+            </el-button>
+            <el-button type="text" title="全部收起" @click="toggle(false)">
+                <svg-icon icon-class="compress" style="width: 20px;height: 20px;"></svg-icon>
+            </el-button>
+        </div>
+        <el-tree @node-drop="nodeDrop" draggable :expand-on-click-node="false" default-expand-all node-key="uiKey"
+                 style="background: transparent;" ref="tree" highlight-current :data="data"
                  :props="defaultProps" @node-click="handleNodeClick"
                  @node-contextmenu="openMenu"></el-tree>
         <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
@@ -22,6 +31,7 @@
                     children: 'children',
                     label: 'label'
                 },
+                bakKey: '',
                 visible: false,
                 top: 0,
                 left: 0,
@@ -38,23 +48,32 @@
             }
         },
         methods: {
+            toggle(flag) {
+                for (let i = 0; i < this.$refs.tree.store._getAllNodes().length; i++) {
+                    this.$refs.tree.store._getAllNodes()[i].expanded = flag;
+                }
+            },
             handleNodeClick (data) {
-                this.selectNode = data;
+                this.selectNode = data
                 this.$emit('nodeClick', data)
             },
             nodeDrop () {
-                this.$emit('nodeDrop');
+                this.$emit('nodeDrop')
             },
-            save() {
+            save () {
                 this.$prompt('请输入部件名称', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     inputValidator: value => {
-                        return !!value;
+                        return !!value
                     },
                     inputErrorMessage: '请输入部件名称'
                 }).then(({ value }) => {
-                    this.$fetch.post('/api/setFile', { data: this.currentNode, pageId: value, type: 'widgets' }).then(jRes => {
+                    this.$fetch.post('/api/setFile', {
+                        data: this.currentNode,
+                        pageId: value,
+                        type: 'widgets'
+                    }).then(jRes => {
                         jRes.json().then(res => {
                             if (res.success) {
                                 this.$message.success('保存成功！')
@@ -64,7 +83,7 @@
                     })
                 }).catch(() => {
 
-                });
+                })
             },
             openMenu (e, nodeData) {
                 const menuMinWidth = 105
@@ -80,7 +99,7 @@
                 this.top = e.clientY - 30
                 this.visible = true
                 this.$refs.tree.setCurrentKey(nodeData.uiKey)
-                this.selectNode = nodeData;
+                this.selectNode = nodeData
                 this.$emit('nodeClick', nodeData)
             },
 
@@ -93,9 +112,17 @@
 
 <style scoped lang="scss">
     .node-tree {
-        background: #95E1D3 ;
+        background: #95E1D3;
         height: 85%;
         overflow: auto;
+        .op-tree {
+            text-align: right;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 10px;
+            .el-button+.el-button {
+                margin-left: 5px;
+            }
+        }
         .contextmenu {
             margin: 0;
             background: #fff;
@@ -118,14 +145,16 @@
             }
         }
     }
-</style>
-<style lang="scss">
-    .node-tree {
+
+    .node-tree /deep/ {
         .el-tree-node__expand-icon {
-            color: red!important;
+            color: red !important;
             &.is-leaf {
-                color: transparent!important;
+                color: transparent !important;
             }
+        }
+        .el-tree-node__content:hover {
+            background: #ffffff60;
         }
     }
 </style>

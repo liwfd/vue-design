@@ -47,6 +47,10 @@
                     type: 'input-widget',
                     parent: ['div', 'form-item-widget', 'row-widget', 'col-widget', 'dialog-widget', 'template']
                 }, {
+                    label: '计数器',
+                    type: 'input-number-widget',
+                    parent: ['div', 'form-item-widget', 'row-widget', 'col-widget', 'dialog-widget', 'template']
+                }, {
                     label: '按钮',
                     type: 'button-widget',
                     parent: ['div', 'form-item-widget', 'row-widget', 'col-widget', 'dialog-widget', 'template']

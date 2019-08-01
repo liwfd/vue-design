@@ -1,7 +1,7 @@
 <template>
     <el-form :model="settingData" label-width="100px" class="setting-form" :rules="rules" v-if="settingData">
         <el-form-item label="当前步骤:" prop="active">
-            <el-input-number class="rule-item" v-model="settingData.active" :min="1" :max="children.length" type="number" placeholder="请输入当前步骤"></el-input-number>
+            <el-input-number controls-position="right" class="rule-item" v-model="settingData.active" :min="1" :max="children.length" type="number" placeholder="请输入当前步骤"></el-input-number>
         </el-form-item>
         <el-form-item label="显示方向:" prop="direction">
             <el-select class="rule-item" v-model="settingData.direction" placeholder="请选择显示方向">

@@ -14,9 +14,12 @@
         </el-form-item>
         <el-form-item label="内容超长样式:" prop="tooltip-effect">
             <el-select class="rule-item" v-model="settingData['tooltip-effect']" placeholder="请选择内容超长样式">
-                <el-option label="亮" value="light" key="0"></el-option>
-                <el-option label="暗" value="dark" key="1"></el-option>
+                <el-option label="亮" value="light"></el-option>
+                <el-option label="暗" value="dark"></el-option>
             </el-select>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="$emit('addChild', 'data', 'table-column-widget')">添加表格列</el-button>
         </el-form-item>
     </el-form>
 </template>
@@ -38,6 +41,11 @@
                         { required: false, message: '请输入列宽', trigger: 'blur' },
                     ],
                 }
+            }
+        },
+        methods: {
+            addColumn() {
+
             }
         }
     }

@@ -40,6 +40,10 @@
                     type: 'table-column-widget',
                     parent: ['table-widget', 'table-column-widget']
                 }, {
+                    label: '分页',
+                    type: 'pagination-widget',
+                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'template', 'card-widget']
+                }, {
                     label: '表单',
                     type: 'form-widget',
                     parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'template', 'card-widget']

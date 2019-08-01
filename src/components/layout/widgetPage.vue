@@ -112,6 +112,7 @@
                         },
                         nativeOn: custom.event ? custom.event.native : {},
                         slot: options.slot,
+                        scopedSlots: this.$scopedSlots,
                         // scopedSlots: {
                         //     default: props => {
                         //         return renderChildren(item)

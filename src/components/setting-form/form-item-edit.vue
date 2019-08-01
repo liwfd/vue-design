@@ -6,6 +6,9 @@
         <el-form-item label="prop:" prop="prop">
             <el-input class="rule-item" v-model="settingData.prop" placeholder="请输入prop"></el-input>
         </el-form-item>
+        <el-form-item label="是否必填:" prop="required">
+            <el-switch class="rule-item" v-model="settingData.required"></el-switch>
+        </el-form-item>
     </el-form>
 </template>
 

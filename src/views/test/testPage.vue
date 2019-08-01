@@ -1,16 +1,9 @@
 <template>
     <div>
-        <!--<widget-page ref="wp" :data="jsonData" :eventHandler="eventHandler" pageId="p000001">-->
-            <!--<div slot="test" style="border: 1px dashed #eee;margin: 10px;">插槽区域，扩展特殊组件</div>-->
-        <!--</widget-page>-->
-        <table-column>
-            <el-tab-pane label="test">
-                666
-            </el-tab-pane>
-            <el-tab-pane label="test">
-                999
-            </el-tab-pane>
-        </table-column>
+        <widget-page ref="wp" :data="jsonData" :eventHandler="eventHandler" pageId="p000003">
+            <div slot="text" style="border: 1px dashed #eee;margin: 10px;">插槽区域，扩展特殊组件</div>
+            <div slot="test" style="border: 1px dashed #eee;margin: 10px;">插槽区域，扩展特殊组件</div>
+        </widget-page>
     </div>
 </template>
 
@@ -55,6 +48,13 @@
                     saveBtn: {
                         event: {
                             click: this.submit
+                        }
+                    },
+                    cancelBtn: {
+                        event: {
+                            click: _ => {
+                                this.visible = false
+                            }
                         }
                     },
                     dialog: {
@@ -112,14 +112,19 @@
                         options: {
                             data: [{
                                 p1: '高中',
-                                p2: '混子'
+                                p2: '混子',
+                                age: 22
+                            }, {
+                                p1: '初中',
+                                p2: '杠子',
+                                age: 18
                             }]
                         },
                         class: {
                             aaa: true
                         }
                     },
-                    dataTableColumn1: {
+                    c1: {
                         options: {
                             render: (h, scope) => {
                                 return h('el-button', {
@@ -135,7 +140,7 @@
                             }
                         }
                     },
-                    dataTableColumn3: {
+                    c2: {
                         options: {
                             formatter: (row, column) => {
                                 return row.p1 + '_' + row.p2
@@ -150,11 +155,9 @@
                 console.log('value', value)
             },
             submit () {
-                // let form = this.$refs.wp.findUI('dataForm1')
-                // form.validate(valid => {
-                //     console.log('valid', valid, form.getFormData(), this.formData)
-                // })
-                console.log('formData', this.formData);
+                this.$getNode('form').validate(valid => {
+                    console.log('valid', valid);
+                })
             },
             change (value) {
                 this.showName = value

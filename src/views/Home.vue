@@ -30,7 +30,7 @@
                         <div class="top-container">
                             <el-tabs type="border-card" style="height: 100%;">
                                 <el-tab-pane label="属性配置">
-                                    <prop-setting ref="propSetting" :propData="selectNode"></prop-setting>
+                                    <prop-setting ref="propSetting" :propData="selectNode" @setProp="(key, value) => selectNode.options[key] = value" @addChild="addNode"></prop-setting>
                                 </el-tab-pane>
                                 <el-tab-pane label="节点配置">
                                     <node-setting :nodeData="selectNode"></node-setting>
@@ -44,39 +44,8 @@
                 </split-pane>
             </template>
         </split-pane>
-        <el-dialog v-el-drag-dialog
-                   class="code-dialog"
-                   v-if="jsonVisible"
-                   :close-on-click-modal="false"
-                   title="编辑JSON"
-                   :visible="jsonVisible"
-                   width="40%"
-                   :before-close="cancel">
-            <div id="jsoneditor" style="width: 100%; height: 500px;"></div>
-            <template slot="footer" class="dialog-footer">
-                <el-button @click="cancel">取 消</el-button>
-                <el-button type="primary" @click="saveJson">确 定</el-button>
-            </template>
-        </el-dialog>
-        <el-dialog v-el-drag-dialog
-                   class="code-dialog"
-                   v-if="htmlVisible"
-                   :close-on-click-modal="false"
-                   title="查看HTML"
-                   :visible="htmlVisible"
-                   width="40%"
-                   :before-close="cancel">
-            <pre v-highlightjs v-if="htmlTemplate" style="margin: -20px 0 -30px 0;">
-                <code class="xml" style="padding-left: -150px;">
-                    <div
-                        style="margin: -20px 0;max-height: 500px;overflow: auto;padding-bottom: 20px;">{{htmlTemplate}}</div>
-                </code>
-            </pre>
-            <template slot="footer" class="dialog-footer">
-                <el-button @click="cancel">取 消</el-button>
-                <el-button type="primary" @click="copy">复 制</el-button>
-            </template>
-        </el-dialog>
+        <json-edit-dialog :visible.sync="jsonVisible" @saveJson="saveJson"></json-edit-dialog>
+        <html-view-dialog :visible.sync="htmlVisible" :htmlTemplate="htmlTemplate" :formatHtml="formatHtml"></html-view-dialog>
     </div>
 </template>
 
@@ -87,15 +56,16 @@
     import WidgetPage from '../components/layout/widgetPage'
     import ToolBar from '../components/layout/toolBar'
     import JSONEditor from 'jsoneditor'
-    import 'jsoneditor/dist/jsoneditor.min.css'
     import vkbeautify from 'vkbeautify'
     import PropSetting from '../components/layout/prop-setting'
     import NodeSetting from '../components/layout/node-setting'
     import StyleSetting from '../components/layout/style-setting'
+    import JsonEditDialog from './components/jsonEditDialog'
+    import HtmlViewDialog from './components/htmlViewDialog'
 
     export default {
         name: 'home',
-        components: { StyleSetting, NodeSetting, PropSetting, ToolBar, WidgetPage, NodeTree, Navbar, splitPane },
+        components: { HtmlViewDialog, JsonEditDialog, StyleSetting, NodeSetting, PropSetting, ToolBar, WidgetPage, NodeTree, Navbar, splitPane },
         data () {
             return {
                 fullscreen: false,
@@ -139,13 +109,6 @@
             },
             resize () {
                 console.log('resize')
-            },
-            copy () {
-                let vm = this
-                this.$copyText(this.formatHtml).then(e => {
-                    vm.$message.success({ message: '复制成功', duration: 2000 })
-                    vm.htmlVisible = false
-                })
             },
             toggle () {
                 this.$refs['fullscreen'].toggle()
@@ -209,10 +172,6 @@
                 }
                 loop(this.jsonData)
             },
-            cancel () {
-                this.jsonVisible = false
-                this.htmlVisible = false
-            },
             nodeClick (node) {
                 this.selectNode = node
             },
@@ -242,7 +201,7 @@
                 let style = ''
                 data.style && Object.keys(data.style).map(item => style += item + ': ' + data.style[item] + ';')
                 if (style) el.style = style
-                data.children.map(item => {
+                data.children && data.children.map(item => {
                     let childNode = this.generateHtml(item)
                     if (data.eleType === 'template') {
                         el.innerHTML += childNode.outerHTML
@@ -362,6 +321,17 @@
                 }
                 loop(this.jsonData)
             }
+        },
+        beforeRouteLeave(to, from, next) {
+            this.$confirm('有数据未保存，是否离开页面?', '提示', {
+                confirmButtonText: '离开',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                next()
+            }).catch(() => {
+                next(false)
+            })
         }
     }
 </script>
@@ -380,21 +350,6 @@
 </style>
 
 <style lang="scss">
-    #jsoneditor, #htmleditor {
-        .jsoneditor-menu {
-            display: none;
-        }
-
-        .jsoneditor-outer.has-main-menu-bar {
-            margin-top: 0;
-            padding-top: 0;
-        }
-
-        div.jsoneditor {
-            border: 1px solid #aaa;
-        }
-    }
-
     .top-container {
         width: 100%;
         height: 100%;
@@ -422,9 +377,4 @@
         }
     }
 
-    .code-dialog {
-        .el-dialog__body {
-            padding: 5px 0 !important;
-        }
-    }
 </style>

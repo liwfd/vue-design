@@ -1,13 +1,13 @@
 <template>
-    <el-button :ref="nodeInfo.nodeKey" v-if="$attrs.show" v-bind="$attrs" v-on="$listeners" :class="nodeInfo.class">
+    <el-pagination :ref="nodeInfo.nodeKey" v-if="$attrs.show" v-bind="$attrs" v-on="$listeners" :class="nodeInfo.class" :layout="$attrs.layout.join(',')">
         <slot></slot>
-    </el-button>
+    </el-pagination>
 </template>
 
 <script>
-    import Button from 'element-ui/lib/button'
+    import Pagination from 'element-ui/lib/pagination'
     export default {
-        name: 'button-widget',
+        name: 'pagination-widget',
         props: ['options', 'nodeInfo'],
         data() {
             return {}
@@ -18,7 +18,7 @@
         mounted () {
             this.$nextTick(() => {
                 // proxy
-                Object.keys(Button.methods).forEach((item) => {
+                Object.keys(Pagination.methods).forEach((item) => {
                     this[item] = this.$refs[this.nodeInfo.nodeKey][item]
                 })
             })

@@ -5,9 +5,9 @@
                 <el-button slot="append" @click="$emit('handle', 'view')">查看</el-button>
             </el-input>
         </el-col>
-        <el-button class="tool-btn" type="text" @click="$emit('handle', 'save')">保存</el-button>
-        <el-button class="tool-btn" type="text" @click="$emit('handle', 'toggle')">预览</el-button>
-        <el-button class="tool-btn" type="text" @click="$emit('handle', 'showHtml')">查看html</el-button>
+        <el-button class="tool-btn" plain @click="$emit('handle', 'save')">保存</el-button>
+        <el-button class="tool-btn" plain @click="$emit('handle', 'toggle')">全屏</el-button>
+        <el-button class="tool-btn" plain @click="$emit('handle', 'showHtml')">查看HTML</el-button>
     </div>
 </template>
 
@@ -27,7 +27,7 @@
         vertical-align: middle;
         .tool-btn {
             float: right;
-            margin: 5px 10px;
+            margin: 5px 10px 5px 0;
         }
     }
 </style>
