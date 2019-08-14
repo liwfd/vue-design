@@ -1,5 +1,5 @@
 <template>
-    <widget-page :eventHandler="eventHandler" :pageId="$route.query.pageId">
+    <widget-page :injection="injection" :pageId="$route.query.pageId">
     </widget-page>
 </template>
 
@@ -31,7 +31,7 @@
             }
         },
         computed: {
-            eventHandler () {
+            injection () {
                 return {
                     table: {
                         options: {

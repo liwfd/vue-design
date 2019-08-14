@@ -18,7 +18,7 @@
                         <tool-bar @handle="handleTool" :page="page"></tool-bar>
                         <fullscreen ref="fullscreen" style="background: #fff;">
                             <div :style="{padding: '5px 0', height: height, overflow: 'auto', width: '100%'}">
-                                <widget-page ref="page" :data="jsonData" @handle="handlePage"></widget-page>
+                                <widget-page key="wp" ref="page" :data="jsonData" @handle="handlePage"></widget-page>
                             </div>
                         </fullscreen>
                     </template>
@@ -29,23 +29,26 @@
                     <template slot="paneL">
                         <div class="top-container">
                             <el-tabs type="border-card" style="height: 100%;">
-                                <el-tab-pane label="属性配置">
-                                    <prop-setting ref="propSetting" :propData="selectNode" @setProp="(key, value) => selectNode.options[key] = value" @addChild="addNode"></prop-setting>
+                                <el-tab-pane label="属性配置" style="z-index: 0;">
+                                    <prop-setting ref="propSetting" :propData="selectNode"
+                                                  @setProp="(key, value) => selectNode.options[key] = value"
+                                                  @addChild="addNode"></prop-setting>
                                 </el-tab-pane>
-                                <el-tab-pane label="节点配置">
+                                <el-tab-pane label="节点配置" style="z-index: 0;">
                                     <node-setting :nodeData="selectNode"></node-setting>
                                 </el-tab-pane>
                             </el-tabs>
                         </div>
                     </template>
-                    <template slot="paneR">
+                    <template slot="paneR" style="z-index: 1;">
                         <style-setting :styleData="selectNode" @save="saveStyle"></style-setting>
                     </template>
                 </split-pane>
             </template>
         </split-pane>
         <json-edit-dialog :visible.sync="jsonVisible" @saveJson="saveJson"></json-edit-dialog>
-        <html-view-dialog :visible.sync="htmlVisible" :htmlTemplate="htmlTemplate" :formatHtml="formatHtml"></html-view-dialog>
+        <html-view-dialog :visible.sync="htmlVisible" :htmlTemplate="htmlTemplate"
+                          :formatHtml="formatHtml"></html-view-dialog>
     </div>
 </template>
 
@@ -65,7 +68,18 @@
 
     export default {
         name: 'home',
-        components: { HtmlViewDialog, JsonEditDialog, StyleSetting, NodeSetting, PropSetting, ToolBar, WidgetPage, NodeTree, Navbar, splitPane },
+        components: {
+            HtmlViewDialog,
+            JsonEditDialog,
+            StyleSetting,
+            NodeSetting,
+            PropSetting,
+            ToolBar,
+            WidgetPage,
+            NodeTree,
+            Navbar,
+            splitPane
+        },
         data () {
             return {
                 fullscreen: false,
@@ -79,7 +93,7 @@
                 page: {
                     pageId: ''
                 },
-                height: window.innerHeight - 100 + "px",
+                height: window.innerHeight - 100 + 'px',
                 jsonData: [{
                     label: '根节点',
                     type: 'div',
@@ -94,15 +108,32 @@
                 }]
             }
         },
+        computed: {
+            dragOptions() {
+                return {
+                    animation: 0,
+                    group: "description",
+                    disabled: false,
+                    ghostClass: "ghost"
+                };
+            }
+        },
         created () {
 
         },
-        mounted() {
-            window.addEventListener("resize", () => {
-                this.height = window.innerHeight - 100 + "px";
-            });
+        mounted () {
+            window.addEventListener('resize', () => {
+                this.height = window.innerHeight - 100 + 'px'
+            })
         },
         methods: {
+            allowDrop (ev) {
+                ev.preventDefault()
+                // console.log('ev', ev);
+            },
+            drop () {
+                console.log('----------------------drop-------------------------')
+            },
             //树拖拽结束
             nodeDrop () {
                 // this.jsonData = JSON.parse(JSON.stringify(this.jsonData));
@@ -114,63 +145,80 @@
                 this.$refs['fullscreen'].toggle()
             },
             view () {
-                this.page.pageId && this.$fetch.post('/api/getFile', { pageId: this.page.pageId, type: 'pages' }).then(jRes => {
+                this.page.pageId && this.$fetch.post('/api/getFile', {
+                    pageId: this.page.pageId,
+                    type: 'pages'
+                }).then(jRes => {
                     jRes.json().then(res => {
                         if (res.success) {
                             this.jsonData = JSON.parse(res.data).data || this.jsonData
                         } else {
-                            this.$message.error(`pageId--[${this.page.pageId}]不存在！`);
+                            this.$message.error(`pageId--[${this.page.pageId}]不存在！`)
                         }
                     })
                 })
             },
-            addNode (mode, type) {
+            addNode (mode, type, uiKey) {
                 let key = new Date().getTime() + '_' + Math.ceil(Math.random() * 99999)
+                let pk = ''
+                if (uiKey) {
+                    pk = uiKey
+                } else {
+                    pk = this.selectNode.uiKey
+                }
                 const loop = data => {
                     data.map(item => {
                         if ('form-widget' === item.type) {
                             this.formKey = item.nodeKey
                         }
-                        if (item.uiKey === this.selectNode.uiKey) {
+                        if (item.uiKey === pk) {
                             if (mode === 'widget') {
-                                this.$fetch.post('/api/getFile', { pageId: type, type: 'widgets' }).then(jRes => {
-                                    jRes.json().then(res => {
-                                        if (res.success) {
-                                            let wid = JSON.parse(res.data).data;
-                                            wid.uiKey = mode + '_' + key;
-                                            item.children.push(wid);
-                                        }
-                                    })
-                                })
-                                return;
+                                this.addWidget(item, mode, key, type)
+                                return
                             }
                             let widget = this._.cloneDeep(this.$constants.widgets[mode][type])
                             let bros = item.children.filter(v => v.type === widget.type)
-                            bros.length++
-
-                            //nodeInfo
                             widget.uiKey = type + '_' + key
-                            widget.nodeKey += bros.length
-                            widget.label += bros.length
-
-                            //options
-                            widget.options.label && (widget.options.label += bros.length)
-                            widget.options.prop && (widget.options.prop += bros.length)
-                            widget.options.value && (widget.options.value += bros.length)
-                            widget.options.name && (widget.options.name += bros.length)
-                            widget.options.text && (widget.options.text += bros.length)
-                            mode !== 'chart' && widget.options.title && (widget.options.title += bros.length)
-                            if (this.$constants.inWidgets.includes(widget.type)) {
-                                widget.options.formKey = this.formKey
-                            }
+                            this.setOptions(widget, bros, mode)
                             item.children.push(widget)
-                        }
-                        if (item.children && item.children.length > 0) {
+                        } else if (item.children && item.children.length > 0) {
                             loop(item.children)
                         }
                     })
                 }
-                loop(this.jsonData)
+                this.$nextTick(_ => {
+                    loop(this.jsonData)
+                })
+            },
+            addWidget (item, mode, key, type) {
+                this.$fetch.post('/api/getFile', { pageId: type, type: 'widgets' }).then(jRes => {
+                    jRes.json().then(res => {
+                        if (res.success) {
+                            let wid = JSON.parse(res.data).data
+                            wid.uiKey = mode + '_' + key
+                            item.children.push(wid)
+                        }
+                    })
+                })
+            },
+            setOptions (widget, bros, mode) {
+
+                bros.length++
+                //nodeInfo
+                widget.nodeKey += bros.length
+                widget.label += bros.length
+                widget.options.key = widget.uiKey
+
+                //options
+                widget.options.label && (widget.options.label += bros.length)
+                widget.options.prop && (widget.options.prop += bros.length)
+                widget.options.value && (widget.options.value += bros.length)
+                widget.options.name && (widget.options.name += bros.length)
+                widget.options.text && (widget.options.text += bros.length)
+                mode !== 'chart' && widget.options.title && (widget.options.title += bros.length)
+                if (this.$constants.inWidgets.includes(widget.type)) {
+                    widget.options.formKey = this.formKey
+                }
             },
             nodeClick (node) {
                 this.selectNode = node
@@ -219,10 +267,14 @@
             },
             save () {
                 if (!this.page.pageId) {
-                    this.$message.error('请先输入pageId');
-                    return;
+                    this.$message.error('请先输入pageId')
+                    return
                 }
-                this.$fetch.post('/api/setFile', { data: this.jsonData, pageId: this.page.pageId, type: 'pages' }).then(jRes => {
+                this.$fetch.post('/api/setFile', {
+                    data: this.jsonData,
+                    pageId: this.page.pageId,
+                    type: 'pages'
+                }).then(jRes => {
                     jRes.json().then(res => {
                         if (res.success) {
                             this.$message.success('保存成功！')
@@ -233,7 +285,7 @@
             handleTool (action) {
                 this[action]()
             },
-            handlePage (action, uiKey) {
+            handlePage (action, uiKey, ext) {
                 if (action === 'cancel') {
                     const loop = data => {
                         data.map(item => {
@@ -246,6 +298,9 @@
                         })
                     }
                     loop(this.jsonData)
+                } else if (action === 'dropDown') {
+                    // this.selectNode.uiKey = uiKey;
+                    this.addNode(ext.mode, ext.type, uiKey)
                 }
             },
             handleNode (action) {
@@ -286,7 +341,7 @@
                         editor.set(this.selectNode)
                     })
                 } else if (action === 'updateMyWidgets') {
-                    this.$refs['navbar'].updateMyWidgets();
+                    this.$refs['navbar'].updateMyWidgets()
                 }
 
             },
@@ -322,7 +377,7 @@
                 loop(this.jsonData)
             }
         },
-        beforeRouteLeave(to, from, next) {
+        beforeRouteLeave (to, from, next) {
             this.$confirm('有数据未保存，是否离开页面?', '提示', {
                 confirmButtonText: '离开',
                 cancelButtonText: '取消',
@@ -344,7 +399,7 @@
 
     .bottom-container {
         width: 100%;
-        background-color: #FCE38A;
+        background-color: pink;
         height: 100%;
     }
 </style>
@@ -354,26 +409,28 @@
         width: 100%;
         height: 100%;
         .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
-            background: #FCE38A;
+            background: pink;
         }
 
         .el-tabs--border-card > .el-tabs__content {
             height: 100%;
-            background: #95E1D3 !important;
+            background: #7BEEB2 !important;
+            z-index: 0;
         }
     }
 
     .tree-card {
         height: 100%;
-        background: #FCE38A !important;
+        background: pink !important;
         border: 0 !important;
+        border-radius: 0 !important;
         .el-card__header {
             padding: 9px 20px;
             color: #409EFF;
         }
         .el-card__body {
             height: 100%;
-            background: #95E1D3 !important;
+            background: #7BEEB2 !important;
         }
     }
 

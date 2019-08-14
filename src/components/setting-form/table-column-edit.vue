@@ -16,6 +16,9 @@
         <el-form-item label="列宽:" prop="width">
             <el-input class="rule-item" v-model="settingData.width" placeholder="请输入列宽"></el-input>
         </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="$emit('addChild', 'data', 'table-column-widget')">添加表格列</el-button>
+        </el-form-item>
     </el-form>
 </template>
 

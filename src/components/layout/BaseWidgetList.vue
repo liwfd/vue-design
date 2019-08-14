@@ -2,8 +2,8 @@
     <div class="widget-list">
         <ul>
             <li v-for="item in basicWidget">
-                <el-button class="widget-btn" type="text"
-                           :disabled="disabled(item)"
+                <el-button class="widget-btn" type="text" draggable
+                           :disabled="disabled(item)" @dragstart.native="ev => drag(ev, 'basic', item)"
                            @click="addNode('basic', item.type)">{{item.label}}
                 </el-button>
             </li>
@@ -37,6 +37,10 @@
                 basicWidget: [{
                     label: '文本',
                     type: 'span',
+                    parent: ['div', 'form-item-widget', 'row-widget', 'col-widget', 'dialog-widget', 'template', 'link-widget']
+                }, {
+                    label: '链接',
+                    type: 'link-widget',
                     parent: ['div', 'form-item-widget', 'row-widget', 'col-widget', 'dialog-widget', 'template']
                 }, {
                     label: '图标',
@@ -63,10 +67,6 @@
                     type: 'select-widget',
                     parent: ['div', 'form-item-widget', 'row-widget', 'col-widget', 'dialog-widget', 'template']
                 }, {
-                    label: '下拉选项',
-                    type: 'option-widget',
-                    parent: ['select-widget']
-                }, {
                     label: '单选',
                     type: 'radio-group-widget',
                     parent: ['div', 'form-item-widget', 'row-widget', 'col-widget', 'dialog-widget', 'template']
@@ -83,6 +83,10 @@
                     type: 'checkbox-widget',
                     parent: ['checkbox-group-widget']
                 }, {
+                    label: '级联选择',
+                    type: 'cascader-widget',
+                    parent: ['div', 'form-item-widget', 'row-widget', 'col-widget', 'dialog-widget', 'template']
+                }, {
                     label: '日期选择',
                     type: 'date-picker-widget',
                     parent: ['div', 'form-item-widget', 'row-widget', 'col-widget', 'dialog-widget', 'template']
@@ -90,12 +94,20 @@
                     label: '时间选择',
                     type: 'time-picker-widget',
                     parent: ['div', 'form-item-widget', 'row-widget', 'col-widget', 'dialog-widget', 'template']
+                }, {
+                    label: '步骤条',
+                    type: 'steps-widget',
+                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'card-widget', 'collapse-item-widget', 'tab-pane-widget']
                 }]
             }
         },
         methods: {
             addNode (mode, type) {
                 this.$emit('addNode', mode, type)
+            },
+            drag(ev, mode, item) {
+                item.mode = mode;
+                ev.dataTransfer.setData('elData', JSON.stringify(item));
             }
         }
     }
@@ -108,9 +120,6 @@
             list-style: none;
             margin: 0 10px;
             float: left;
-            .widget-btn {
-                /*color: #000;*/
-            }
         }
     }
 </style>

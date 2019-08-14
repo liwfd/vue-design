@@ -1,5 +1,5 @@
 <template>
-    <widget-page :eventHandler="eventHandler" pageId="p000004">
+    <widget-page :injection="injection" pageId="p000004">
     </widget-page>
 </template>
 
@@ -73,7 +73,7 @@
             }
         },
         computed: {
-            eventHandler () {
+            injection () {
                 return {
                     line: {
                         options: {

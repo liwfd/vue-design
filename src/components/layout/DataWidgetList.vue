@@ -2,7 +2,7 @@
     <div class="widget-list">
         <ul>
             <li v-for="item in dataWidget">
-                <el-button class="widget-btn" type="text" :disabled="disabled(item)"
+                <el-button class="widget-btn" type="text" :disabled="disabled(item)" draggable @dragstart.native="ev => drag(ev, 'data', item)"
                            @click="addNode('data', item.type)">{{item.label}}
                 </el-button>
             </li>
@@ -34,29 +34,25 @@
                 dataWidget: [{
                     label: '表格',
                     type: 'table-widget',
-                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'template', 'card-widget']
-                }, {
-                    label: '表格列',
-                    type: 'table-column-widget',
-                    parent: ['table-widget', 'table-column-widget']
+                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'template', 'card-widget', 'collapse-item-widget', 'drawer-widget']
                 }, {
                     label: '分页',
                     type: 'pagination-widget',
-                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'template', 'card-widget']
+                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'template', 'card-widget', 'collapse-item-widget', 'drawer-widget']
                 }, {
                     label: '表单',
                     type: 'form-widget',
-                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'template', 'card-widget']
-                }, {
-                    label: '表单项',
-                    type: 'form-item-widget',
-                    parent: ['form-widget', 'row-widget', 'col-widget', 'template']
+                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'template', 'card-widget', 'collapse-item-widget', 'drawer-widget']
                 }]
             }
         },
         methods: {
             addNode (mode, type) {
                 this.$emit('addNode', mode, type)
+            },
+            drag(ev, mode, item) {
+                item.mode = mode;
+                ev.dataTransfer.setData('elData', JSON.stringify(item));
             }
         }
     }
@@ -69,9 +65,6 @@
             list-style: none;
             margin: 0 10px;
             float: left;
-            .widget-btn {
-                /*color: #000;*/
-            }
         }
     }
 </style>

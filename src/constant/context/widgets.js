@@ -14,6 +14,26 @@ export default {
             },
             children: []
         },
+        'link-widget': {
+            label: '链接',
+            mode: 'basic',
+            style: {},
+            class: '',
+            type: 'link-widget',
+            eleType: 'el-link',
+            nodeKey: 'basicLink',
+            options: {
+                show: true,
+                type: 'primary',
+                text: '链接',
+                underline: true,
+                disabled: false,
+                href: '',
+                icon: '',
+                target: ''
+            },
+            children: []
+        },
         'icon': {
             label: '图标',
             mode: 'basic',
@@ -131,6 +151,29 @@ export default {
             },
             children: []
         },
+        'cascader-widget': {
+            label: '级联选择',
+            mode: 'basic',
+            style: {},
+            class: '',
+            type: 'cascader-widget',
+            eleType: 'el-cascader',
+            nodeKey: 'basicCascader',
+            options: {
+                disabled: false,
+                clearable: true,
+                filterable: true,
+                show: true,
+                separator: '/',
+                props: {
+                    expandTrigger: 'click',
+                    multiple: false,
+                    value: 'value',
+                    label: 'label'
+                },
+            },
+            children: []
+        },
         'radio-group-widget': {
             label: '单选',
             mode: 'basic',
@@ -221,6 +264,36 @@ export default {
                 disabled: false,
                 show: true,
                 clearable: true
+            },
+            children: []
+        },
+        'steps-widget': {
+            label: '步骤条',
+            mode: 'basic',
+            style: {},
+            class: '',
+            type: 'steps-widget',
+            eleType: 'el-steps',
+            nodeKey: 'basicSteps',
+            options: {
+                show: true,
+                direction: 'horizontal',
+                active: 1
+            },
+            children: []
+        },
+        'step-widget': {
+            label: '步骤',
+            mode: 'basic',
+            style: {},
+            class: '',
+            type: 'el-step',
+            eleType: 'el-step',
+            nodeKey: 'basicStep',
+            options: {
+                show: true,
+                description: '描述',
+                title: '步骤'
             },
             children: []
         }
@@ -510,6 +583,41 @@ export default {
             },
             children: []
         },
+        'drawer-widget': {
+            label: '抽屉',
+            mode: 'layout',
+            style: {},
+            class: '',
+            type: 'drawer-widget',
+            eleType: 'el-drawer',
+            nodeKey: 'layoutDrawer',
+            options: {
+                show: true,
+                visible: false,
+                modal: true,
+                direction: 'rtl',
+                title: '抽屉',
+                'wrapperClosable': false,
+                'show-close': true,
+                'size': '50%'
+            },
+            children: []
+        },
+        'divider-widget': {
+            label: '分割线',
+            mode: 'layout',
+            style: {},
+            class: '',
+            type: 'divider-widget',
+            eleType: 'el-divider',
+            nodeKey: 'layoutDivider',
+            options: {
+                show: true,
+                direction: 'horizontal',
+                'content-position': 'center'
+            },
+            children: []
+        },
         'card-widget': {
             label: '卡片',
             mode: 'layout',
@@ -588,36 +696,6 @@ export default {
                 show: true,
                 name: 'name',
                 title: '标题'
-            },
-            children: []
-        },
-        'steps-widget': {
-            label: '步骤条',
-            mode: 'layout',
-            style: {},
-            class: '',
-            type: 'steps-widget',
-            eleType: 'el-steps',
-            nodeKey: 'layoutSteps',
-            options: {
-                show: true,
-                direction: 'horizontal',
-                active: 1
-            },
-            children: []
-        },
-        'step-widget': {
-            label: '步骤',
-            mode: 'layout',
-            style: {},
-            class: '',
-            type: 'el-step',
-            eleType: 'el-step',
-            nodeKey: 'layoutStep',
-            options: {
-                show: true,
-                description: '描述',
-                title: '步骤'
             },
             children: []
         }

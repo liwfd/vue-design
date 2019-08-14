@@ -83,7 +83,7 @@
                         if (options.formKey && this.formModels[options.formKey]) {
                             options.formData = this.formModels[options.formKey]
                         } else {
-                            options.formData = null
+                            options.formData = {}
                         }
                     }
                     //解决列排序问题
@@ -91,7 +91,7 @@
                         options.key = index + 100
                     }
                     if (custom.render && typeof custom.render === 'function') {
-                        return custom.render(h, item)
+                        return custom.render(h, item, this)
                     }
                     return h(item.type, {
                         props: {

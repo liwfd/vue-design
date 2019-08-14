@@ -1,5 +1,5 @@
 <template>
-    <el-table v-if="$attrs.show" v-bind="$attrs" v-on="$listeners" :class="nodeInfo.class" :ref="nodeInfo.nodeKey">
+    <el-table v-if="$attrs.show" v-bind="$attrs" v-on="$listeners" :class="nodeInfo.class" :ref="nodeInfo.nodeKey" @drop.native="drop">
         <el-table-column type="selection" v-if="$attrs.selection" :key="-1"></el-table-column>
         <slot></slot>
     </el-table>
@@ -24,6 +24,15 @@
                 })
             })
         },
+        methods: {
+            drop (ev) {
+                ev.preventDefault();
+                ev.stopPropagation();
+                ev.target.className = ev.target.className.replace('dragOver', '')
+                let elData = JSON.parse(ev.dataTransfer.getData('elData'))
+                this.$emit('handle', 'dropDown', this.nodeInfo.uiKey, elData)
+            }
+        }
     }
 </script>
 

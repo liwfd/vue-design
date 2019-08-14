@@ -112,7 +112,7 @@
 
 <style scoped lang="scss">
     .node-tree {
-        background: #95E1D3;
+        background: #7BEEB2;
         height: 85%;
         overflow: auto;
         .op-tree {

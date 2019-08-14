@@ -2,7 +2,7 @@
     <div class="widget-list">
         <ul>
             <li v-for="item in layoutWidget">
-                <el-button class="widget-btn" type="text" :disabled="disabled(item)"
+                <el-button class="widget-btn" type="text" :disabled="disabled(item)" draggable @dragstart.native="ev => drag(ev, 'layout', item)"
                            @click="addNode('layout', item.type)">{{item.label}}
                 </el-button>
             </li>
@@ -41,7 +41,8 @@
                     type: 'template',
                     parent: [],
                     all: true
-                }, {
+                },
+                /*{
                     label: '外层容器',
                     type: 'container-widget',
                     parent: [],
@@ -66,7 +67,8 @@
                     type: 'footer-widget',
                     parent: [],
                     all: true
-                }, {
+                }*/
+                {
                     label: '栅格布局',
                     type: 'row-widget',
                     parent: [],
@@ -81,6 +83,14 @@
                     type: 'dialog-widget',
                     parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'card-widget', 'collapse-item-widget']
                 }, {
+                    label: '抽屉',
+                    type: 'drawer-widget',
+                    parent: ['div', 'row-widget', 'col-widget', 'card-widget', 'collapse-item-widget']
+                }, {
+                    label: '分割线',
+                    type: 'divider-widget',
+                    parent: ['div', 'row-widget', 'col-widget', 'card-widget', 'drawer-widget', 'dialog-widget', 'collapse-item-widget']
+                }, {
                     label: '卡片',
                     type: 'card-widget',
                     parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'card-widget', 'collapse-item-widget', 'tab-pane-widget']
@@ -89,31 +99,19 @@
                     type: 'tabs-widget',
                     parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'card-widget', 'tab-pane-widget']
                 }, {
-                    label: '页签',
-                    type: 'tab-pane-widget',
-                    parent: ['tabs-widget']
-                }, {
                     label: '面板',
                     type: 'collapse-widget',
                     parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'card-widget', 'collapse-item-widget', 'tab-pane-widget']
-                }, {
-                    label: '面板项',
-                    type: 'collapse-item-widget',
-                    parent: ['collapse-widget']
-                }, {
-                    label: '步骤条',
-                    type: 'steps-widget',
-                    parent: ['div', 'row-widget', 'col-widget', 'dialog-widget', 'card-widget', 'collapse-item-widget', 'tab-pane-widget']
-                }, {
-                    label: '步骤',
-                    type: 'step-widget',
-                    parent: ['steps-widget']
                 }],
             }
         },
         methods: {
             addNode (mode, type) {
                 this.$emit('addNode', mode, type)
+            },
+            drag(ev, mode, item) {
+                item.mode = mode;
+                ev.dataTransfer.setData('elData', JSON.stringify(item));
             }
         }
     }
@@ -126,9 +124,6 @@
             list-style: none;
             margin: 0 10px;
             float: left;
-            .widget-btn {
-                /*color: #000;*/
-            }
         }
     }
 </style>

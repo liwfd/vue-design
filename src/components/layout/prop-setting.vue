@@ -1,13 +1,15 @@
 <template>
     <div>
         <table-edit v-if="propData.type === 'table-widget'" :settingData="propData.options" @addChild="addChild"></table-edit>
-        <table-column-edit v-if="propData.type === 'table-column-widget'" :settingData="propData.options"></table-column-edit>
+        <table-column-edit v-if="propData.type === 'table-column-widget'" :settingData="propData.options" @addChild="addChild"></table-column-edit>
         <pagination-edit v-if="propData.type === 'pagination-widget'" :settingData="propData.options" @setProp="(key, value) => $emit('setProp', key, value)"></pagination-edit>
         <form-edit v-if="propData.type === 'form-widget'" :settingData="propData.options" @addChild="addChild"></form-edit>
         <form-item-edit v-if="propData.type === 'form-item-widget'" :settingData="propData.options"></form-item-edit>
         <col-edit v-if="propData.type === 'col-widget'" :settingData="propData.options"></col-edit>
         <tab-pane-edit v-if="propData.type === 'el-tab-pane'" :settingData="propData.options"></tab-pane-edit>
-        <steps-edit :children="propData.children" v-if="propData.type === 'steps-widget'" :settingData="propData.options"></steps-edit>
+        <steps-edit :children="propData.children" v-if="propData.type === 'steps-widget'" :settingData="propData.options" @addChild="addChild"></steps-edit>
+        <step-edit v-if="propData.type === 'el-step'" :settingData="propData.options"></step-edit>
+        <tabs-edit v-if="propData.type === 'tabs-widget'" :settingData="propData.options" @addChild="addChild"></tabs-edit>
         <button-edit v-if="propData.type === 'button-widget'" :settingData="propData.options"></button-edit>
         <icon-edit v-if="propData.type === 'svg-icon'" :settingData="propData.options"></icon-edit>
         <input-number-edit v-if="propData.type === 'input-number-widget'" :settingData="propData.options"></input-number-edit>
@@ -18,9 +20,14 @@
         <time-picker-edit v-if="propData.type === 'time-picker-widget'" :settingData="propData.options"></time-picker-edit>
         <slot-edit v-if="propData.type === 'slot'" :settingData="propData.options"></slot-edit>
         <dialog-edit v-if="propData.type === 'dialog-widget'" :settingData="propData.options"></dialog-edit>
+        <drawer-edit v-if="propData.type === 'drawer-widget'" :settingData="propData.options"></drawer-edit>
+        <divider-edit v-if="propData.type === 'divider-widget'" :settingData="propData.options"></divider-edit>
         <span-edit v-if="propData.type === 'span'" :settingData="propData.options"></span-edit>
+        <link-edit v-if="propData.type === 'link-widget'" :settingData="propData.options"></link-edit>
         <template-edit v-if="propData.type === 'template'" :settingData="propData.options"></template-edit>
         <radio-edit v-if="['radio-widget', 'checkbox-widget'].includes(propData.type)" :settingData="propData.options"></radio-edit>
+        <collapse-edit v-if="propData.type === 'collapse-widget'" :settingData="propData.options" @addChild="addChild"></collapse-edit>
+        <collapse-item-edit v-if="propData.type === 'collapse-item-widget'" :settingData="propData.options"></collapse-item-edit>
     </div>
 </template>
 
@@ -46,9 +53,16 @@
     import StepsEdit from '../setting-form/steps-edit'
     import PaginationEdit from '../setting-form/pagination-edit'
     import InputNumberEdit from '../setting-form/input-number-edit'
+    import TabsEdit from '../setting-form/tabs-edit'
+    import StepEdit from '../setting-form/step-edit'
+    import DrawerEdit from '../setting-form/drawer-edit'
+    import DividerEdit from '../setting-form/divider-edit'
+    import LinkEdit from '../setting-form/link-edit'
+    import CollapseEdit from '../setting-form/collapse-edit'
+    import CollapseItemEdit from '../setting-form/collapse-item-edit'
     export default {
         name: 'prop-setting',
-        components: { InputNumberEdit, PaginationEdit, StepsEdit, TabPaneEdit, TableEdit, TimePickerEdit, DatePickerEdit, IconEdit, DialogEdit, SpanEdit, TemplateEdit, SlotEdit, RadioEdit, ButtonEdit, OptionEdit, SwitchEdit, InputEdit, FormItemEdit, FormEdit, ColEdit, TableColumnEdit },
+        components: { CollapseItemEdit, CollapseEdit, LinkEdit, DividerEdit, DrawerEdit, StepEdit, TabsEdit, InputNumberEdit, PaginationEdit, StepsEdit, TabPaneEdit, TableEdit, TimePickerEdit, DatePickerEdit, IconEdit, DialogEdit, SpanEdit, TemplateEdit, SlotEdit, RadioEdit, ButtonEdit, OptionEdit, SwitchEdit, InputEdit, FormItemEdit, FormEdit, ColEdit, TableColumnEdit },
         props: ['propData'],
         methods: {
             addChild(mode, type) {

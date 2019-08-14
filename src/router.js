@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import TestPage from './views/test/testPage.vue'
 import Page from './views/test/page'
+import Hook from './views/test/hook'
 import ArrayTest from './views/test/array'
 
 Vue.use(Router)
@@ -20,6 +21,11 @@ export default new Router({
             path: '/array',
             name: 'array',
             component: ArrayTest
+        },
+        {
+            path: '/hook',
+            name: 'hook',
+            component: Hook
         },
         {
             path: '/test',

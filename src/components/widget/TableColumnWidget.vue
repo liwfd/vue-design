@@ -6,7 +6,7 @@
                 <span v-else>{{scope.row[options.prop]}}</span>
             </template>
             <template v-else>
-                <span v-html="options.formatter(scope.row, options)"></span>
+                <span v-html="options.formatter(scope, options)"></span>
             </template>
         </template>
         <slot></slot>

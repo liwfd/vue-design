@@ -2,8 +2,8 @@
     <div class="widget-list">
         <ul>
             <li v-for="item in myWidget">
-                <el-button class="widget-btn" type="text" :disabled="disabled(item)"
-                           @click="addNode('widget', item.label)">{{item.label}}
+                <el-button class="widget-btn" type="text" :disabled="disabled(item)" draggable @dragstart.native="ev => drag(ev, 'widget', item)"
+                           @click="addNode('widget', item.type)">{{item.type}}
                 </el-button>
             </li>
         </ul>
@@ -41,13 +41,17 @@
             addNode (mode, name) {
                 this.$emit('addNode', mode, name)
             },
+            drag(ev, mode, item) {
+                item.mode = mode;
+                ev.dataTransfer.setData('elData', JSON.stringify(item));
+            },
             getWidgets () {
                 this.$fetch.post('/api/getFiles', { type: 'widgets' }).then(jRes => {
                     jRes.json().then(res => {
                         if (res.success) {
                             this.myWidget = [];
                             res.data.map(item => {
-                                this.myWidget.push({ label: item.split('.json')[0], all: true })
+                                this.myWidget.push({ type: item.split('.json')[0], all: true })
                             })
                         }
                     })
@@ -64,9 +68,6 @@
             list-style: none;
             margin: 0 10px;
             float: left;
-            .widget-btn {
-                /*color: #000;*/
-            }
         }
     }
 </style>

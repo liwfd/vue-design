@@ -1,11 +1,11 @@
 <template>
     <el-card class="no-padding">
         <template slot="header">样式配置</template>
-        <div id="csseditor" style="width: 100%; height: 34vh;" value="2421">
+        <div id="csseditor">
 
         </div>
-        <div style="text-align: left;">
-            <el-button type="primary" plain @click="reset">重置</el-button>
+        <div class="el-card__footer">
+            <el-button type="danger" plain @click="reset">重置</el-button>
             <el-button type="primary" plain @click="$emit('save', editor.get(), styleData.uiKey)">确定</el-button>
         </div>
     </el-card>
@@ -55,9 +55,13 @@
     }
 </script>
 
-<style lang="scss">
-    .no-padding {
+<style lang="scss" scoped>
+    .no-padding /deep/ {
+        height: 100%;
+        background: #7BEEB2;
         #csseditor {
+            width: 100%;
+            height: calc(50vh - 134px);
             .jsoneditor-menu {
                 display: none;
             }
@@ -68,23 +72,25 @@
             }
 
             div.jsoneditor {
-                border: 1px solid #aaa;
+                border: 0;
             }
 
             div.jsoneditor-statusbar, .ace_gutter-layer {
-                background: #FCE38A;
+                background: pink;
             }
         }
         .el-card__body {
-            background: #FCE38A;
+            background: pink;
             padding: 0!important;
         }
-        height: 100%;
         .el-card__header {
             height: 50px;
             padding: 14px 20px;
-            background: #FCE38A;
+            background: pink;
             color: #666;
+        }
+        .el-card__footer {
+            text-align: left;
         }
     }
 </style>
