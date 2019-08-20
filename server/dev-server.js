@@ -19,7 +19,7 @@ module.exports = app => {
     })
 
     app.use('/api/setFile', (req, res) => {
-        fs.writeFile(baseDir + `/${req.body.type}/${req.body.pageId}.json`, JSON.stringify(req.body), err => {
+        fs.writeFile(baseDir + `/${req.body.type}/${req.body.pagecode}.json`, JSON.stringify(req.body), err => {
             if (err) {
                 res.json({ err, success: false })
             }
@@ -28,7 +28,7 @@ module.exports = app => {
     })
 
     app.use('/api/getFile', (req, res) => {
-        fs.readFile(baseDir + `/${req.body.type}/${req.body.pageId}.json`, 'utf-8', (err, data) => {
+        fs.readFile(baseDir + `/${req.body.type}/${req.body.pagecode}.json`, 'utf-8', (err, data) => {
             // if (err) {
             //     res.json({err})
             // }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <widget-page :data="jsonData" :injection="injection" pageId="级联选择" @jsonData="getJSON">
+        <widget-page :data="jsonData" :injection="injection" pagecode="级联选择" @jsonData="getJSON">
             <div slot="test" style="border: 1px dashed #eee;margin: 10px;">
                 <el-button>插槽</el-button>
             </div>

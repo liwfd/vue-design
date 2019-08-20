@@ -71,7 +71,7 @@
                 }).then(({ value }) => {
                     this.$fetch.post('/api/setFile', {
                         data: this.currentNode,
-                        pageId: value,
+                        pagecode: value,
                         type: 'widgets'
                     }).then(jRes => {
                         jRes.json().then(res => {

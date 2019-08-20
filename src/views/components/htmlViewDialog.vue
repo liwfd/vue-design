@@ -9,8 +9,7 @@
                :before-close="cancel">
             <pre v-highlightjs v-if="htmlTemplate" style="margin: -20px 0 -30px 0;">
                 <code class="xml" style="padding-left: -150px;">
-                    <div
-                        style="margin: -20px 0;max-height: 500px;overflow: auto;padding-bottom: 20px;">{{htmlTemplate}}</div>
+                    <div style="margin: -20px 0;max-height: 500px;overflow: auto;padding-bottom: 20px;">{{htmlTemplate}}</div>
                 </code>
             </pre>
         <template slot="footer" class="dialog-footer">

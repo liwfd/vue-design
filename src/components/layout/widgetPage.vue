@@ -14,7 +14,7 @@
                     return {}
                 }
             },
-            pageId: {
+            pagecode: {
                 type: String,
                 default () {
                     return ''
@@ -42,13 +42,13 @@
                 return UI
             },
             getData () {
-                this.pageId && this.$fetch.post('/api/getFile', { pageId: this.pageId, type: 'pages' }).then(jRes => {
+                this.pagecode && this.$fetch.post('/api/getFile', { pagecode: this.pagecode, type: 'pages' }).then(jRes => {
                     jRes.json().then(res => {
                         if (res.success) {
                             this.jsonData = JSON.parse(res.data).data || this.jsonData
                             this.$emit('jsonData', this.jsonData)
                         } else {
-                            console.error(`pageId--[${this.pageId}]不存在！`)
+                            console.error(`pagecode--[${this.pagecode}]不存在！`)
                         }
                     })
                 })
@@ -58,7 +58,7 @@
             this.getData()
         },
         watch: {
-            pageId () {
+            pagecode () {
                 this.getData()
             }
         },

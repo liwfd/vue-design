@@ -1,29 +1,24 @@
-# vue-design
+首页
 
-## Project setup
-```
-npm install
-```
+![首页](./public/image/home.jpg)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+节点编辑
 
-### Compiles and minifies for production
-```
-npm run build
-```
+![首页](./public/image/节点编辑.jpg)
 
-### Run your tests
-```
-npm run test
-```
+template查看
 
-### Lints and fixes files
-```
-npm run lint
-```
+![首页](./public/image/template查看.jpg)
 
-### slotize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+代码查看
+
+![首页](./public/image/代码查看.jpg)
+
+属性修改
+
+![首页](./public/image/属性修改.jpg)
+
+组件列表(支持拖放)
+
+![首页](./public/image/组件列表.jpg)
+

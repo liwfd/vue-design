@@ -1,5 +1,5 @@
 <template>
-    <widget-page :injection="injection" :pageId="$route.query.pageId">
+    <widget-page :injection="injection" :pagecode="$route.query.pagecode">
     </widget-page>
 </template>
 

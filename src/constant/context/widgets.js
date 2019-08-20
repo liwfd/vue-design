@@ -165,11 +165,15 @@ export default {
                 filterable: true,
                 show: true,
                 separator: '/',
+                'show-all-levels': true,
                 props: {
                     expandTrigger: 'click',
                     multiple: false,
                     value: 'value',
-                    label: 'label'
+                    label: 'label',
+                    children: 'children',
+                    disabled: 'disabled',
+                    leaf: 'leaf',
                 },
             },
             children: []

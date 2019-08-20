@@ -17,8 +17,10 @@
                     <template slot="paneR">
                         <tool-bar @handle="handleTool" :page="page"></tool-bar>
                         <fullscreen ref="fullscreen" style="background: #fff;">
-                            <div :style="{padding: '5px 0', height: height, overflow: 'auto', width: '100%'}">
-                                <widget-page key="wp" ref="page" :data="jsonData" @handle="handlePage"></widget-page>
+                            <div :style="{padding: '5px 0', height: height, overflow: 'auto', width: '100%', position: 'relative'}">
+                                <source-block>
+                                    <widget-page key="wp" ref="page" :data="jsonData" @handle="handlePage"></widget-page>
+                                </source-block>
                             </div>
                         </fullscreen>
                     </template>
@@ -65,10 +67,12 @@
     import StyleSetting from '../components/layout/style-setting'
     import JsonEditDialog from './components/jsonEditDialog'
     import HtmlViewDialog from './components/htmlViewDialog'
+    import SourceBlock from './components/sourceBlock'
 
     export default {
         name: 'home',
         components: {
+            SourceBlock,
             HtmlViewDialog,
             JsonEditDialog,
             StyleSetting,
@@ -91,7 +95,7 @@
                 formatHtml: '',
                 formKey: '',
                 page: {
-                    pageId: ''
+                    pagecode: ''
                 },
                 height: window.innerHeight - 100 + 'px',
                 jsonData: [{
@@ -145,15 +149,15 @@
                 this.$refs['fullscreen'].toggle()
             },
             view () {
-                this.page.pageId && this.$fetch.post('/api/getFile', {
-                    pageId: this.page.pageId,
+                this.page.pagecode && this.$fetch.post('/api/getFile', {
+                    pagecode: this.page.pagecode,
                     type: 'pages'
                 }).then(jRes => {
                     jRes.json().then(res => {
                         if (res.success) {
                             this.jsonData = JSON.parse(res.data).data || this.jsonData
                         } else {
-                            this.$message.error(`pageId--[${this.page.pageId}]不存在！`)
+                            this.$message.error(`pagecode--[${this.page.pagecode}]不存在！`)
                         }
                     })
                 })
@@ -191,7 +195,7 @@
                 })
             },
             addWidget (item, mode, key, type) {
-                this.$fetch.post('/api/getFile', { pageId: type, type: 'widgets' }).then(jRes => {
+                this.$fetch.post('/api/getFile', { pagecode: type, type: 'widgets' }).then(jRes => {
                     jRes.json().then(res => {
                         if (res.success) {
                             let wid = JSON.parse(res.data).data
@@ -223,18 +227,15 @@
             nodeClick (node) {
                 this.selectNode = node
             },
-            setAttr (node, key, value) {
-                node.setAttribute(key, value)
-            },
             generateHtml (data) {
                 let el = document.createElement(data.eleType)
                 // 设置属性
                 for (let prop in data.options) {
                     if (data.options.hasOwnProperty(prop)) {
                         if (typeof data.options[prop] === 'string') {
-                            this.setAttr(el, prop, data.options[prop])
+                            el.setAttribute(prop, data.options[prop]);
                         } else {
-                            this.setAttr(el, ':' + prop, data.options[prop])
+                            el.setAttribute(':' + prop, data.options[prop]);
                         }
                         if (['el-button', 'el-radio', 'el-checkbox'].includes(data.eleType)) {
                             el.innerText = data.options.text
@@ -243,7 +244,7 @@
                 }
 
                 //设置class
-                data.class && this.setAttr(el, 'class', data.class)
+                data.class && el.setAttribute('class', data.class)
 
                 //设置style
                 let style = ''
@@ -266,13 +267,13 @@
                 this.htmlTemplate = `\n${vkbeautify.xml(xml)}\n`
             },
             save () {
-                if (!this.page.pageId) {
-                    this.$message.error('请先输入pageId')
+                if (!this.page.pagecode) {
+                    this.$message.error('请先输入pagecode')
                     return
                 }
                 this.$fetch.post('/api/setFile', {
                     data: this.jsonData,
-                    pageId: this.page.pageId,
+                    pagecode: this.page.pagecode,
                     type: 'pages'
                 }).then(jRes => {
                     jRes.json().then(res => {

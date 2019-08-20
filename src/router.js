@@ -4,6 +4,8 @@ import Home from './views/Home.vue'
 import TestPage from './views/test/testPage.vue'
 import Page from './views/test/page'
 import Hook from './views/test/hook'
+import PreT from './views/test/preT'
+import Table from './views/test/md/table.md'
 import ArrayTest from './views/test/array'
 
 Vue.use(Router)
@@ -21,6 +23,16 @@ export default new Router({
             path: '/array',
             name: 'array',
             component: ArrayTest
+        },
+        {
+            path: '/preT',
+            name: 'preT',
+            component: PreT
+        },
+        {
+            path: '/table',
+            name: 'table',
+            component: Table
         },
         {
             path: '/hook',

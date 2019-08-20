@@ -28,6 +28,7 @@
         <radio-edit v-if="['radio-widget', 'checkbox-widget'].includes(propData.type)" :settingData="propData.options"></radio-edit>
         <collapse-edit v-if="propData.type === 'collapse-widget'" :settingData="propData.options" @addChild="addChild"></collapse-edit>
         <collapse-item-edit v-if="propData.type === 'collapse-item-widget'" :settingData="propData.options"></collapse-item-edit>
+        <cascader-edit v-if="propData.type === 'cascader-widget'" :settingData="propData.options"></cascader-edit>
     </div>
 </template>
 
@@ -60,9 +61,10 @@
     import LinkEdit from '../setting-form/link-edit'
     import CollapseEdit from '../setting-form/collapse-edit'
     import CollapseItemEdit from '../setting-form/collapse-item-edit'
+    import CascaderEdit from '../setting-form/cascader-edit'
     export default {
         name: 'prop-setting',
-        components: { CollapseItemEdit, CollapseEdit, LinkEdit, DividerEdit, DrawerEdit, StepEdit, TabsEdit, InputNumberEdit, PaginationEdit, StepsEdit, TabPaneEdit, TableEdit, TimePickerEdit, DatePickerEdit, IconEdit, DialogEdit, SpanEdit, TemplateEdit, SlotEdit, RadioEdit, ButtonEdit, OptionEdit, SwitchEdit, InputEdit, FormItemEdit, FormEdit, ColEdit, TableColumnEdit },
+        components: { CascaderEdit, CollapseItemEdit, CollapseEdit, LinkEdit, DividerEdit, DrawerEdit, StepEdit, TabsEdit, InputNumberEdit, PaginationEdit, StepsEdit, TabPaneEdit, TableEdit, TimePickerEdit, DatePickerEdit, IconEdit, DialogEdit, SpanEdit, TemplateEdit, SlotEdit, RadioEdit, ButtonEdit, OptionEdit, SwitchEdit, InputEdit, FormItemEdit, FormEdit, ColEdit, TableColumnEdit },
         props: ['propData'],
         methods: {
             addChild(mode, type) {
@@ -73,7 +75,7 @@
 </script>
 
 <style scoped lang="scss">
-    .setting-form {
+    .setting-form /deep/ {
         .rule-item {
             width: 80%;
         }

@@ -15,6 +15,7 @@ import _ from 'lodash'
 import Api from './api'
 import Constant from './constant'
 import './components/widget'
+import './components/demo'
 import "styles/total.scss";
 import "./icons";
 
