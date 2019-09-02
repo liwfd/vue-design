@@ -1,6 +1,5 @@
 const express = require('./server/dev-server')
 const markdownRender = require('markdown-it')()
-const striptags = require('./server/config/strip-tags')
 const path = require('path')
 // //去console插件
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
@@ -8,13 +7,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 //
 function resolve (dir) {
     return path.join(__dirname, dir)
-}
-
-function convert(str) {
-    str = str.replace(/(&#x)(\w{4});/gi, function($0) {
-        return String.fromCharCode(parseInt(encodeURIComponent($0).replace(/(%26%23x)(\w{4})(%3B)/g, '$2'), 16));
-    });
-    return str;
 }
 
 module.exports = {
@@ -94,9 +86,6 @@ module.exports = {
                                 let descriptionHTML = description ? markdownRender.render(description) : ''
                                 // 2.获取代码块内的html和js代码
                                 let content = tokens[idx + 1].content
-                                console.log('content', content);
-                                let html = convert(striptags.strip(content, ['script', 'style'])).replace(/(<[^>]*)=""(?=.*>)/g, '$1');
-                                console.log('html', html);
                                 // 3.使用自定义开发组件【DemoBlock】来包裹内容并且渲染成案例和代码示例
                                 return `<demo-block>
                                             <div class="source" slot="source">${content}</div>

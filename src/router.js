@@ -7,6 +7,7 @@ import Hook from './views/test/hook'
 import PreT from './views/test/preT'
 import Table from './views/test/md/table.md'
 import ArrayTest from './views/test/array'
+import Hoc from './views/test/hoc'
 
 Vue.use(Router)
 
@@ -38,6 +39,11 @@ export default new Router({
             path: '/hook',
             name: 'hook',
             component: Hook
+        },
+        {
+            path: '/hoc',
+            name: 'hoc',
+            component: Hoc
         },
         {
             path: '/test',

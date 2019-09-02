@@ -5,57 +5,57 @@
             <svg-icon v-if="showIcon" icon-class="code"></svg-icon>
             <span v-else>查看代码</span>
         </el-button>
-        <div class="code-panel" :class="visible ? 'open' : 'close'">
-            <div class="mask" @click="visible = false">
-                <div class="panel" @click.stop :class="visible ? 'open' : 'close'">
-                    <el-icon class="el-icon-close close-icon" @click.native="visible = false"></el-icon>
-                    <pre v-highlightjs style="height: 100%;margin: 0;overflow: auto">
-                    <code class="xml">
-                        &lttemplate&gt
-                    </code>
-                    <code class="xml" style="margin-top: -40px;">
-                            {{template}}
-                    </code>
-                    <code class="xml" style="margin-top: -40px">
-                        &lt/template&gt
-                    </code>
-                    <code class="xml" style="margin-top: -30px;">
-                        &ltscript&gt
-                    </code>
-                    <code class="javascript" style="padding: 0;margin: -30px 0;">
-                            export default {
-                                name: 'p000001',
-                                computed: {
-                                    injection () {
-                                        return {
-                                            btn: {
-                                                options: {
-                                                    type: 'danger'
-                                                },
-                                                event: {
-                                                    change: e => {
-                                                        /* do something */
+            <div class="code-panel" v-show="visible">
+                <div class="mask">
+                    <div class="panel" @click.stop :class="visible ? 'open' : 'close'" v-clickoutside="() => {this.visible = false}">
+                            <el-icon class="el-icon-close close-icon" @click.native="visible = false"></el-icon>
+                            <pre v-highlightjs style="height: 100%;margin: 0;overflow: auto">
+                                <code class="xml">
+                                    &lttemplate&gt
+                                </code>
+                                <code class="xml" style="margin-top: -40px;">
+                                        {{template}}
+                                </code>
+                                <code class="xml" style="margin-top: -40px">
+                                    &lt/template&gt
+                                </code>
+                                <code class="xml" style="margin-top: -30px;">
+                                    &ltscript&gt
+                                </code>
+                                <code class="javascript" style="padding: 0;margin: -30px 0;">
+                                        export default {
+                                            name: 'p000001',
+                                            computed: {
+                                                injection () {
+                                                    return {
+                                                        btn: {
+                                                            options: {
+                                                                type: 'danger'
+                                                            },
+                                                            event: {
+                                                                change: e => {
+                                                                    /* do something */
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
+                                            },
+                                            created() {
+                                                /* created */
+                                            },
+                                            mounted() {
+                                                /* mounted */
                                             }
                                         }
-                                    }
-                                },
-                                created() {
-                                    /* created */
-                                },
-                                mounted() {
-                                    /* mounted */
-                                }
-                            }
-                    </code>
-                    <code class="xml" style="margin-top: -30px">
-                        &lt/script&gt
-                    </code>
-                </pre>
+                                </code>
+                                <code class="xml" style="margin-top: -30px">
+                                    &lt/script&gt
+                                </code>
+                            </pre>
+                        </div>
                 </div>
             </div>
-        </div>
     </div>
 </template>
 
@@ -107,11 +107,30 @@
             }
         }
 
+        @keyframes drawer-r {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(0%);
+            }
+        }
+
+        @keyframes drawer-l {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
         .code-panel {
             position: absolute;
             top: 0;
             height: 100%;
             width: 100%;
+            transition: all .5s;
             z-index: 10000;
             .mask {
                 overflow: hidden;
@@ -120,7 +139,7 @@
                 background-color: #00000060;
                 .panel {
                     height: 100%;
-                    transition: all .5s;
+                    width: 0;
                     background-color: #282c34;
                     position: relative;
                     .close-icon {
@@ -136,24 +155,18 @@
                 }
                 .open {
                     width: 80%;
+                    animation: drawer-r .5s;
                 }
                 .close {
-                    width: 0;
+                    /*width: 0;*/
+                    animation: drawer-l .5s;
                 }
             }
         }
 
-        .open {
-            width: 100%;
-        }
-
-        .close {
-            width: 0;
-        }
-
         code {
             margin-bottom: -30px !important;
-            margin-left: -100px !important;
+            margin-left: -200px !important;
             background: transparent;
         }
 
